@@ -1,0 +1,23 @@
+{
+  "name": "henribot",
+  "version": "1.0.0",
+  "description": "My first Discord Bot",
+  "main": "henribot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CoderHenri/HenriBot.git"
+  },
+  "author": "Henri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CoderHenri/HenriBot/issues"
+  },
+  "homepage": "https://github.com/CoderHenri/HenriBot#readme",
+  "dependencies": {
+    "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1"
+  }
+}
