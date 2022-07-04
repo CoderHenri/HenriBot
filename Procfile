@@ -1,1 +1,1 @@
-workers: node henribot.js
+worker: node henribot.js
