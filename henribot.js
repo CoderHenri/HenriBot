@@ -1,26 +1,29 @@
-// Setup our environment variables via dotenv
-require('dotenv').config()
+const { Client } = require("discord.js");
+// Importing this allows you to access the environment variables of the running node process
+require("dotenv").config();
 
-// Import relevant classes from discord.js
-const { Client, Intents } = require('discord.js');
+const client = new Client();
 
-// Instantiate a new client with some necessary parameters.
-const client = new Client(
-    { intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] }
-);
+// "process.env" accesses the environment variables for the running node process. PREFIX is the environment variable you defined in your .env file
+const prefix = process.env.PREFIX;
 
-// Notify progress
-client.on('ready', function(e){
-    console.log(`Logged in as ${client.user.tag}!`)
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
-// Authenticate
-client.login(process.env.DISCORD_TOKEN);
+client.on("messageCreate", message => {
 
-//Example Functionality
-client.on('message',
-    function(msg){
-        if(msg.content === "Hello HenriBot!"){
-            msg.reply("Hello yourself!")
-        }
-})
+  // Here's I'm using one of An Idiot's Guide's basic command handlers. Using the PREFIX environment variable above, I can do the same as the bot token below
+  if (message.author.bot) return;
+  if (message.content.indexOf(prefix.length) !== 0) return;
+
+  const args = message.content.slice(prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+
+  if (command === "ping") {
+    message.reply("Pong!");
+  }
+});
+
+// Here you can login the bot. It automatically attempts to login the bot with the environment variable you set for your bot token (either "CLIENT_TOKEN" or "DISCORD_TOKEN")
+client.login();
