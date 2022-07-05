@@ -44,7 +44,7 @@ client.on("messageCreate", async message => {
           ProfitLoss = ProfitLoss * -1;
         }
         //message.reply(PoolList[i].TokenName + " : " + tempAnswer + " Profit/Loss: " + ProfitLoss + "%");
-        tempBotString = tempBotString + PoolList[i].TokenName + String(" : " + tempAnswer[0] + " | Profit/Loss: " + ProfitLoss + "%" + " | 24h Volume: " + Number(tempAnswer[1]).toFixed(2) + "$" + "\n");
+        tempBotString = tempBotString + PoolList[i].TokenName + String(" : " + Number(tempAnswer[0]).toFixed(5) + " | Profit/Loss: " + ProfitLoss + "%" + " | 24h Volume: " + Number(tempAnswer[1]).toFixed(2) + "$" + "\n");
       }
       message.reply(tempBotString);
     } else if(UserCommand == "poolinfo") {
