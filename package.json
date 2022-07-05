@@ -18,10 +18,11 @@
   "homepage": "https://github.com/CoderHenri/HenriBot#readme",
   "dependencies": {
     "discord.js": "^13.8.1",
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "node-fetch": "^3.2.6"
   },
   "engines": {
     "node": "16.15.1",
     "npm": "8.13.2"
- }
+  }
 }
