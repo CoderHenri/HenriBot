@@ -20,10 +20,7 @@ client.on("messageCreate", async message => {
   let UserCommand = message.content;
 
   UserMessage = UserMessage.slice(0,2);
-  console.log(UserMessage);
-
   UserCommand = UserCommand.slice(3);
-  console.log(UserCommand);
 
   if (UserMessage == ">h") {
     message.reply("Bot got a command!");
@@ -38,16 +35,16 @@ client.on("messageCreate", async message => {
       for(i=0; i<PoolList.length; i++) {
         let tempAnswer = await QueryPool(PoolList[i].TokenName);
         let ProfitLoss = null;
-        if(parseFloat(tempAnswer) >= PoolList[i].OurPrice) {
-          ProfitLoss = Number(parseFloat(tempAnswer)/PoolList[i].OurPrice*100).toFixed(2);
+        if(parseFloat(tempAnswer[0]) >= PoolList[i].OurPrice) {
+          ProfitLoss = Number(parseFloat(tempAnswer[0])/PoolList[i].OurPrice*100).toFixed(2);
         }
         
-        if(parseFloat(tempAnswer) <= PoolList[i].OurPrice) {
-          ProfitLoss = Number((PoolList[i].OurPrice-parseFloat(tempAnswer))/PoolList[i].OurPrice*100).toFixed(2);
+        if(parseFloat(tempAnswer[0]) <= PoolList[i].OurPrice) {
+          ProfitLoss = Number((PoolList[i].OurPrice-parseFloat(tempAnswer[0]))/PoolList[i].OurPrice*100).toFixed(2);
           ProfitLoss = ProfitLoss * -1;
         }
         //message.reply(PoolList[i].TokenName + " : " + tempAnswer + " Profit/Loss: " + ProfitLoss + "%");
-        tempBotString = tempBotString + PoolList[i].TokenName + String(" : " + tempAnswer + " | Profit/Loss: " + ProfitLoss + "%" + "\n");
+        tempBotString = tempBotString + PoolList[i].TokenName + String(" : " + tempAnswer[0] + " | Profit/Loss: " + ProfitLoss + "%" + " | 24h Volume: " + Number(tempAnswer[1]).toFixed(2) + "$" + "\n");
       }
       message.reply(tempBotString);
     } else if(UserCommand == "poolinfo") {
@@ -64,19 +61,18 @@ client.on("messageCreate", async message => {
 
 async function QueryPool(CGName) {
 
-  let tempString = "";
+  let tempString = [];
 
-  await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+CGName+"&vs_currencies=usd")
+  await fetch("https://api.coingecko.com/api/v3/simple/price?ids="+CGName+"&vs_currencies=usd&include_24hr_vol=true")
 
   .then(function(response) { 
     return response.json(); 
   })
             
   .then(function(data) {
-    console.log(data);
-    tempString = String(data[CGName].usd);
+    tempString.push(String(data[CGName].usd));
+    tempString.push(String(data[CGName].usd_24h_vol));
   });   
-  console.log(tempString + " tempString");
   return tempString;     
 }
 
