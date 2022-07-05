@@ -13,6 +13,7 @@ client.on("ready", () => {
 
 client.on("messageCreate", message => {
 
+  message = message.slice(0,4);
   if (message.content === "ping") {
     message.reply("Pong!");
   }
