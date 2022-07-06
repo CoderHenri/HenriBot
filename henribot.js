@@ -22,6 +22,7 @@ client.on("messageCreate", async message => {
   UserMessage = UserMessage.slice(0,2);
   UserCommand = UserCommand.slice(3);
 
+  try{
   if (UserMessage == ">h") {
     message.reply("Bot got a command!");
     let tempBotString = "";
@@ -97,6 +98,9 @@ client.on("messageCreate", async message => {
       message.reply("unknown or missing command");
     }
   }
+} catch(err) {
+  message.reply("Something errored out, please ask Henri to check where this poor bot failed!");
+}
 });
 
 async function QueryPool(CGName) {
