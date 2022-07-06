@@ -62,34 +62,27 @@ client.on("messageCreate", async message => {
       message.reply(JSON.stringify(PoolList));
 
     } else if(UserCommand == "bntil") {
-      message.reply("query BNT IL");
       let BancorMasterVault = await MastervaultQuery();
+      await sleep(1500);
       let bnDaiArray = await EtherscanQuery("0x06CD589760Da4616a0606da1367855808196C352"); //contract address of bnDai
+      await sleep(1500);
       let bnLinkArray = await EtherscanQuery("0x516c164A879892A156920A215855C3416616C46E");
-      await sleep(2005);
-      let bnwBTCArray = await EtherscanQuery("0x2CE37087559CBe8022FA5D70A0c502B7AE03F290");
-      
 
       let bnDaiLoss = null;
-      let bnwBTCLoss = null;
       let bnLinkLoss = null;
 
       for(j=0; j<BancorMasterVault.length; j++) {
         if(BancorMasterVault[j].Name == "Dai") {
-          bnDaiLoss = BancorMasterVault[j].MasterSupply;
-          bnDaiLoss = Number(bnDaiLoss / bnDaiArray.TotalSupply * 100).toFixed(2);
+          bnDaiLoss = parseFloat(BancorMasterVault[j].MasterSupply);
+          bnDaiLoss = Number(100 - bnDaiLoss / bnDaiArray[0].TotalSupply * 100).toFixed(2);
         }
         if(BancorMasterVault[j].Name == "Chainlink") {
-          bnLinkLoss = BancorMasterVault[j].MasterSupply;
-          bnLinkLoss = Number(bnLinkLoss / bnLinkArray.TotalSupply * 100).toFixed(2);
-        }
-        if(BancorMasterVault[j].Name == "Wrapped Bitcoin") {
-          bnwBTCLoss = BancorMasterVault[j].MasterSupply;
-          bnwBTCLoss = Number(bnwBTCLoss / bnwBTCArray.TotalSupply * 100).toFixed(2);
+          bnLinkLoss = parseFloat(BancorMasterVault[j].MasterSupply);
+          bnLinkLoss = Number(100 - bnLinkLoss / bnLinkArray[0].TotalSupply * 100).toFixed(2);
         }
       }
 
-      message.reply("**Bancor Impermanent Loss**\nDai:" + bnDaiLoss + "% & "+ bnDaiArray.Holders +" Holders\nLink:" + bnLinkLoss + "% & "+ bnLinkArray.Holders +" Holders\nwBTC:" + bnwBTCLoss + "% & "+ bnwBTCArray.Holders +" Holders\n");
+      message.reply("**Bancor Impermanent Loss**\nDai: " + bnDaiLoss + "% & "+ bnDaiArray[0].Holders +" Holders\nLink: " + bnLinkLoss + "% & "+ bnLinkArray[0].Holders +" Holders");
 
     } else if(UserCommand == "help") {
       message.reply("pool, poolinfo, bntil");
@@ -131,7 +124,6 @@ async function EtherscanQuery(ContractAddress) {
   })
             
   .then(function(data) {
-    console.log(data);
     let tempTotalSupply = Number(WeiConverter(data.totalSupply)).toFixed(4);
     tempEtherArray.push({Name : data.name, TotalSupply : tempTotalSupply, Holders : data.holdersCount});
   });   
