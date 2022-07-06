@@ -46,10 +46,6 @@ client.on("messageCreate", async message => {
         }
 
         let DailyVolume = Number(tempAnswer[1]).toFixed(0);
-        
-        function kFormatter(num) {
-          return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
-        }
 
         DailyVolume = kFormatter(DailyVolume);
         
@@ -71,18 +67,25 @@ client.on("messageCreate", async message => {
       let bnDaiLoss = null;
       let bnLinkLoss = null;
 
+      let bnDaiSupply = null;
+      let bnLinkSupply = null;
+
       for(j=0; j<BancorMasterVault.length; j++) {
         if(BancorMasterVault[j].Name == "Dai") {
           bnDaiLoss = parseFloat(BancorMasterVault[j].MasterSupply);
           bnDaiLoss = Number(100 - bnDaiLoss / bnDaiArray[0].TotalSupply * 100).toFixed(2);
+          bnDaiSupply = parseFloat(BancorMasterVault[j].MasterSupply);
+          bnDaiSupply = kFormatter(bnDaiSupply);
         }
         if(BancorMasterVault[j].Name == "Chainlink") {
           bnLinkLoss = parseFloat(BancorMasterVault[j].MasterSupply);
           bnLinkLoss = Number(100 - bnLinkLoss / bnLinkArray[0].TotalSupply * 100).toFixed(2);
+          bnLinkSupply = parseFloat(BancorMasterVault[j].MasterSupply);
+          bnLinkSupply = kFormatter(bnLinkSupply);
         }
       }
 
-      message.reply("**Bancor Impermanent Loss**\nDai: " + bnDaiLoss + "% & "+ bnDaiArray[0].Holders +" Holders\nLink: " + bnLinkLoss + "% & "+ bnLinkArray[0].Holders +" Holders");
+      message.reply("**Bancor Impermanent Loss**\n**Dai**:\n" + bnDaiLoss + "% & "+ bnDaiArray[0].Holders +" Holders | Supply: " + bnDaiSupply + " bnDai & " + kFormatter(bnDaiArray[0].TotalSupply) + " Dai\n**Link**:\n" + bnLinkLoss + "% & "+ bnLinkArray[0].Holders +" Holders | Supply: " + bnLinkSupply + " bnLink & " + kFormatter(bnLinkArray[0].TotalSupply) + " Link");
 
     } else if(UserCommand == "help") {
       message.reply("pool, poolinfo, bntil");
@@ -146,6 +149,10 @@ async function MastervaultQuery() {
     }
   });   
   return tempMasterArray;  
+}
+
+function kFormatter(num) {
+  return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
 }
 
 function WeiConverter(a) {
