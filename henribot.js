@@ -85,7 +85,7 @@ client.on("messageCreate", async message => {
         }
       }
 
-      message.reply("**Bancor Impermanent Loss**\n**Dai**:\n" + bnDaiLoss + "% & "+ bnDaiArray[0].Holders +" Holders | Supply: " + bnDaiSupply + " bnDai & " + kFormatter(bnDaiArray[0].TotalSupply) + " Dai\n**Link**:\n" + bnLinkLoss + "% & "+ bnLinkArray[0].Holders +" Holders | Supply: " + bnLinkSupply + " bnLink & " + kFormatter(bnLinkArray[0].TotalSupply) + " Link");
+      message.reply("**Bancor Impermanent Loss**\n**Dai**:\n" + bnDaiLoss + "% & "+ bnDaiArray[0].Holders +" Holders | Supply: " + bnDaiSupply + " Dai & " + kFormatter(bnDaiArray[0].TotalSupply) + " bnDai\n**Link**:\n" + bnLinkLoss + "% & "+ bnLinkArray[0].Holders +" Holders | Supply: " + bnLinkSupply + " Link & " + kFormatter(bnLinkArray[0].TotalSupply) + " bnLink");
 
     } else if(UserCommand == "help") {
       message.reply("pool, poolinfo, bntil");
