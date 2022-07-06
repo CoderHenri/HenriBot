@@ -65,6 +65,7 @@ client.on("messageCreate", async message => {
       let BancorMasterVault = await MastervaultQuery();
       let bnDaiArray = await EtherscanQuery("0x06CD589760Da4616a0606da1367855808196C352"); //contract address of bnDai
       let bnLinkArray = await EtherscanQuery("0x516c164A879892A156920A215855C3416616C46E");
+      await sleep(2005);
       let bnwBTCArray = await EtherscanQuery("0x2CE37087559CBe8022FA5D70A0c502B7AE03F290");
       
 
@@ -87,7 +88,7 @@ client.on("messageCreate", async message => {
         }
       }
 
-      message.reply("**Bancor Impermanent Loss**\nDai:" + bnDaiLoss + "% & "+ bnDaiArray.Holders +" Holders\n" + bnLinkLoss + "% & "+ bnLinkArray.Holders +" Holders\n" + bnwBTCLoss + "% & "+ bnwBTCArray.Holders +" Holders\n");
+      message.reply("**Bancor Impermanent Loss**\nDai:" + bnDaiLoss + "% & "+ bnDaiArray.Holders +" Holders\nLink:" + bnLinkLoss + "% & "+ bnLinkArray.Holders +" Holders\nwBTC:" + bnwBTCLoss + "% & "+ bnwBTCArray.Holders +" Holders\n");
 
     } else if(UserCommand == "help") {
       message.reply("pool, poolinfo, bntil");
@@ -154,6 +155,10 @@ async function MastervaultQuery() {
 function WeiConverter(a) {
   a = a.slice(0,a.length - 18) + "." + a.slice(a.length - 18, a.length);
   return a;
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Here you can login the bot. It automatically  attempts to login the bot with the environment variable you set for your bot token (either "CLIENT_TOKEN" or "DISCORD_TOKEN")
